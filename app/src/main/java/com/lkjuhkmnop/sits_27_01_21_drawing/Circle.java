@@ -25,7 +25,7 @@ public class Circle implements Figure{
     }
 
     public boolean isUnderXY(float x, float y) {
-        if ((x*x - fx * fx) + (y*y - fy * fy) < r*r) {
+        if ((x - fx)*(x - fx) + (y - fy)*(y - fy) < r*r) {
             return true;
         }
         return false;
