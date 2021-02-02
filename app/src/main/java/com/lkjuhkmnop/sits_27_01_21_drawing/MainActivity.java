@@ -3,7 +3,6 @@ package com.lkjuhkmnop.sits_27_01_21_drawing;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
-import android.view.DragEvent;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -14,16 +13,21 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         MyView view = new MyView(this, null);
         view.setOnTouchListener(new View.OnTouchListener(){
-
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-                MyView eView = (MyView) v;
-                float x = event.getX();
-                float y = event.getY();
-                if (event.getDownTime() > 200) {
-                    eView.moveFigures(x, y);
+                MyView ev = (MyView) v;
+                float tx = event.getX();
+                float ty = event.getY();
+//                Log.d("lkj_onTouch", "onTouch: event: " + event);
+                if (ev.haveSelectedFigure()) {
+                    ev.moveSelectedFigureToXY(tx, ty);
                 } else {
-                    eView.createFig(x, y);
+                    MyFigure figUnderXY = ev.getFigureUnderXY(tx, ty);
+                    if (figUnderXY != null) {
+                        ev.setSelectedFigure(figUnderXY);
+                    } else {
+                        ev.createFig(tx, ty);
+                    }
                 }
                 return false;
             }

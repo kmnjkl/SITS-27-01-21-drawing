@@ -9,27 +9,51 @@ import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class MyView extends View {
-    private List<MyFigure> figures = new ArrayList<MyFigure>();
+    private ArrayList<MyFigure> figures = new ArrayList<MyFigure>();
+    private MyFigure selectedFigure = null;
 
     public MyView(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
     }
 
     public void createFig(float x, float y) {
-        figures.set(figures.size(), new MyFigure(x, y));
+        figures.add(new MyFigure(x, y));
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    public void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         for (MyFigure fig: figures) {
-            fig.draw(canvas);
+            fig.drawFigure(canvas);
         }
-        invalidate();
+        this.invalidate();
     }
 
-    public void moveFigures(float x, float y) {
+    public MyFigure getFigureUnderXY(float tx, float ty) {
+        for (MyFigure fig: figures) {
+            if (fig.isFigureUnderXY(tx, ty)) {
+                return fig;
+            }
+        }
+        return null;
+    }
+
+    public void setSelectedFigure(MyFigure fig) {
+        this.selectedFigure = fig;
+    }
+
+    public boolean haveSelectedFigure() {
+        if (this.selectedFigure != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public void moveSelectedFigureToXY(float tx, float ty) {
+        this.selectedFigure.moveToXY(tx, ty);
+        this.selectedFigure = null;
     }
 }
